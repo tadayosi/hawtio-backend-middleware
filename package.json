@@ -106,5 +106,8 @@
     "exclude": [
       "**/*.spec.js"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
