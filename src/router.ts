@@ -1,14 +1,14 @@
-import axios from 'axios'
 import express, { NextFunction, Request, Response, Router } from 'express'
 import Logger, { ILogLevel } from 'js-logger'
 
-const log = Logger.get('hawtio-backend')
+import { log } from './logger'
+import { proxy } from './proxy'
 
 export type HawtioBackendOptions = {
   /**
    * Log level
    */
-  logLevel: ILogLevel
+  logLevel: ILogLevel | string
 }
 
 const defaultOptions: HawtioBackendOptions = {
@@ -18,7 +18,15 @@ const defaultOptions: HawtioBackendOptions = {
 export function hawtioBackend(
   options: HawtioBackendOptions = defaultOptions
 ): Router {
-  log.setLevel(options.logLevel)
+  if (typeof options.logLevel === 'string') {
+    log.setLevel(
+      (Logger as unknown as { [key: string]: ILogLevel })[
+        options.logLevel.toUpperCase()
+      ]
+    )
+  } else {
+    log.setLevel(options.logLevel)
+  }
 
   const backend = express.Router()
 
@@ -94,49 +102,13 @@ type URIOptions = {
 function getTargetURI(options: URIOptions): string {
   let uri = ''
   if (options.username && options.password) {
-    uri = `${options.proto}://${options.username}:${options.password}@${options.hostname}:${options.port}/${options.path}`
+    uri = `${options.proto}://${options.username}:${options.password}@${options.hostname}:${options.port}${options.path}`
   } else {
-    uri = `${options.proto}://${options.hostname}:${options.port}/${options.path}`
+    uri = `${options.proto}://${options.hostname}:${options.port}${options.path}`
   }
   if (options.query) {
     uri += '?' + options.query.toString()
   }
   log.debug('Target URL:', uri)
   return uri
-}
-
-async function proxy(uri: string, req: Request, res: Response) {
-  const handleError = (e: string) => {
-    res.status(500).end(`error proxying to "${uri}: ${e}`)
-  }
-  delete req.headers.referer
-  try {
-    const res2 = await axios({
-      method: req.method,
-      url: uri,
-      data: req.body,
-      headers: req.headers,
-    })
-    switch (res2.status) {
-      case 401:
-      case 403:
-        log.info(
-          'Authentication failed on remote server:',
-          res2.status,
-          res2.statusText,
-          uri
-        )
-        log.debug('Response headers:', res2.headers)
-        res.header(res2.headers).sendStatus(res2.status)
-        break
-      default:
-        if (res2.headers['content-type']) {
-          res.header('content-type', res2.headers['content-type'])
-        }
-        res.status(res2.status)
-        res2.data.pipe(res).on('error', handleError)
-    }
-  } catch (error) {
-    handleError(String(error))
-  }
 }
