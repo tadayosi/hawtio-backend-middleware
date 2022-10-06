@@ -4,6 +4,20 @@
 
 An Express middleware that implements Hawtio backend.
 
+## Installation
+
+### NPM
+
+```
+npm install --save-dev @hawtio/backend-middleware
+```
+
+### Yarn
+
+```
+yarn add --dev @hawtio/backend-middleware
+```
+
 ## Usage
 
 You can use this backend with Express as follows:
