@@ -18,6 +18,7 @@
     "hawtio",
     "jolokia",
     "libauth",
+    "middlewares",
     "mkdir",
     "prettierignore",
     "proxying",

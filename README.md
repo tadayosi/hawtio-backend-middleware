@@ -8,13 +8,13 @@ An Express middleware that implements Hawtio backend.
 
 ### NPM
 
-```
+```console
 npm install --save-dev @hawtio/backend-middleware
 ```
 
 ### Yarn
 
-```
+```console
 yarn add --dev @hawtio/backend-middleware
 ```
 
@@ -40,6 +40,7 @@ app.listen(3333, () => {
 ```
 
 To use it with Webpack, set up dev server's middlewares as follows:
+
 ```javascript
 const { hawtioBackend } = require('@hawtio/backend-middleware')
 
