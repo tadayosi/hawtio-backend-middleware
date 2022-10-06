@@ -110,7 +110,7 @@ function getTargetURI(options: URIOptions): string {
   } else {
     uri = `${options.proto}://${options.hostname}:${options.port}${options.path}`
   }
-  if (options.query) {
+  if (Object.keys(options.query).length !== 0) {
     uri += '?' + stringify(options.query)
   }
   log.debug('Target URL:', uri)
