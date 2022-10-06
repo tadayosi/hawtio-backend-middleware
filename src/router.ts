@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response, Router } from 'express'
 import Logger, { ILogLevel } from 'js-logger'
 import { ParsedQs, stringify } from 'qs'
 
-import { log } from './logger'
+import { configureLog, log } from './logger'
 import { proxy } from './proxy'
 
 export type HawtioBackendOptions = {
@@ -19,16 +19,7 @@ const defaultOptions: HawtioBackendOptions = {
 export function hawtioBackend(
   options: HawtioBackendOptions = defaultOptions
 ): Router {
-  if (typeof options.logLevel === 'string') {
-    log.setLevel(
-      (Logger as unknown as { [key: string]: ILogLevel })[
-        options.logLevel.toUpperCase()
-      ]
-    )
-  } else {
-    log.setLevel(options.logLevel)
-  }
-  log.info('Logging level:', log.getLevel().name)
+  configureLog(options.logLevel)
 
   const backend = express.Router()
 
