@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response, Router } from 'express'
 import Logger, { ILogLevel } from 'js-logger'
+import { ParsedQs, stringify } from 'qs'
 
 import { log } from './logger'
 import { proxy } from './proxy'
@@ -27,13 +28,14 @@ export function hawtioBackend(
   } else {
     log.setLevel(options.logLevel)
   }
+  log.info('Logging level:', log.getLevel().name)
 
   const backend = express.Router()
 
   backend.param(
     'proto',
     (_req: Request, res: Response, next: NextFunction, proto: string) => {
-      log.debug('requesting proto:', proto)
+      log.debug('Requesting proto:', proto)
       switch (proto.toLowerCase()) {
         case 'http':
         case 'https':
@@ -48,7 +50,7 @@ export function hawtioBackend(
   backend.param(
     'hostname',
     (_req: Request, _res: Response, next: NextFunction, hostname: string) => {
-      log.debug('requesting hostname:', hostname)
+      log.debug('Requesting hostname:', hostname)
       next()
     }
   )
@@ -56,9 +58,9 @@ export function hawtioBackend(
   backend.param(
     'port',
     (_req: Request, res: Response, next: NextFunction, port: string) => {
-      log.debug('requesting port:', port)
+      log.debug('Requesting port:', port)
       const portNumber = parseInt(port)
-      log.debug('parsed port number:', portNumber)
+      log.debug('Parsed port number:', portNumber)
       if (isNaN(portNumber)) {
         res.status(406).send(`Invalid port number: ${port}`)
       } else {
@@ -76,6 +78,8 @@ export function hawtioBackend(
   })
 
   backend.use('/:proto/:hostname/:port/', (req: Request, res: Response) => {
+    log.debug('Requesting path:', req.path)
+    log.debug('Requesting query:', req.query)
     const uri = getTargetURI({
       proto: req.params.proto,
       hostname: req.params.hostname,
@@ -96,7 +100,7 @@ type URIOptions = {
   hostname: string
   port: string
   path: string
-  query: qs.ParsedQs
+  query: ParsedQs
 }
 
 function getTargetURI(options: URIOptions): string {
@@ -107,7 +111,7 @@ function getTargetURI(options: URIOptions): string {
     uri = `${options.proto}://${options.hostname}:${options.port}${options.path}`
   }
   if (options.query) {
-    uri += '?' + options.query.toString()
+    uri += '?' + stringify(options.query)
   }
   log.debug('Target URL:', uri)
   return uri
