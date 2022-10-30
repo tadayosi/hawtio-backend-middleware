@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.2](https://github.com/hawtio/hawtio-backend-middleware/compare/v1.0.1...v1.0.2) (2022-10-30)
+
+
+### Bug Fixes
+
+* fix spelling lint ([5d9d4b7](https://github.com/hawtio/hawtio-backend-middleware/commit/5d9d4b77028b42b6a78d788f4db215997f02901a))
+* version back to 1.0.1 ([22dbc91](https://github.com/hawtio/hawtio-backend-middleware/commit/22dbc91c9c445869aece0f89f255588a123b8d00))
+
 ### [1.0.1](https://github.com/tadayosi/hawtio-backend-middleware/compare/v1.0.0...v1.0.1) (2022-10-06)
 
 
