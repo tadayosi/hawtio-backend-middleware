@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.3](https://github.com/hawtio/hawtio-backend-middleware/compare/v1.0.2...v1.0.3) (2022-10-30)
+
+
+### Bug Fixes
+
+* build files not included with yarn pack ([c56f658](https://github.com/hawtio/hawtio-backend-middleware/commit/c56f6583e82957e09dce8111b9d3c30f72fa7377))
+
 ### [1.0.2](https://github.com/hawtio/hawtio-backend-middleware/compare/v1.0.1...v1.0.2) (2022-10-30)
 
 
