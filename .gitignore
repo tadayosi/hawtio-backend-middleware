@@ -8,6 +8,11 @@ coverage
 *.log
 package-lock.json
 
-# Yarn
+# Yarn v3 (non zero-installs)
 .pnp.*
 .yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
