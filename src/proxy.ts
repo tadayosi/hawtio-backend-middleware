@@ -16,26 +16,31 @@ export async function proxy(uri: string, req: Request, res: Response) {
       headers: req.headers,
       responseType: 'stream',
     })
-    switch (res2.status) {
-      case 401:
-      case 403:
-        log.info(
-          'Authentication failed on remote server:',
-          res2.status,
-          res2.statusText,
-          uri
-        )
-        log.debug('Response headers:', res2.headers)
-        res.header(res2.headers).sendStatus(res2.status)
-        break
-      default:
-        if (res2.headers['content-type']) {
-          res.header('content-type', res2.headers['content-type'])
-        }
-        res.status(res2.status)
-        res2.data.pipe(res).on('error', handleError)
+    if (res2.headers['content-type']) {
+      res.header('content-type', res2.headers['content-type'])
     }
+    res.status(res2.status)
+    res2.data.pipe(res).on('error', handleError)
   } catch (error) {
-    handleError(String(error))
+    if (axios.isAxiosError(error) && error.response) {
+      const res2 = error.response
+      switch (res2.status) {
+        case 401:
+        case 403:
+          log.info(
+            'Authentication failed on remote server:',
+            error.status,
+            error.message,
+            uri
+          )
+          log.debug('Response headers:', res2.headers)
+          res.header(res2.headers).sendStatus(res2.status)
+          break
+        default:
+          handleError(String(error))
+      }
+    } else {
+      handleError(String(error))
+    }
   }
 }
