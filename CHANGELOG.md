@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.4](https://github.com/hawtio/hawtio-backend-middleware/compare/v1.0.3...v1.0.4) (2023-10-24)
+
+
+### Bug Fixes
+
+* propagate 40x errors from the target correctly ([bb00ac6](https://github.com/hawtio/hawtio-backend-middleware/commit/bb00ac69f9d22037c2f5d7411861f82a90ec691b))
+
 ### [1.0.3](https://github.com/hawtio/hawtio-backend-middleware/compare/v1.0.2...v1.0.3) (2022-10-30)
 
 
