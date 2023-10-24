@@ -47,7 +47,7 @@ const { hawtioBackend } = require('@hawtio/backend-middleware')
 module.exports = {
   devServer: {
     setupMiddlewares: (middlewares) => {
-      middlewares.push({
+      middlewares.unshift({
         name: 'hawtio-backend',
         path: '/proxy',
         middleware: hawtioBackend({
