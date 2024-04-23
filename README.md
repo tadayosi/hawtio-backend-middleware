@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> The project was transfered to https://github.com/hawtio/hawtio-next/tree/main/packages/backend-middleware
+
 # Hawtio Backend Middleware for Express
 
 [![Test](https://github.com/hawtio/hawtio-backend-middleware/actions/workflows/test.yml/badge.svg)](https://github.com/hawtio/hawtio-backend-middleware/actions/workflows/test.yml)
